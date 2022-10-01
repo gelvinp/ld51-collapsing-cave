@@ -10,6 +10,7 @@ onready var shift_down_timer: Timer = $ShiftDownTimer
 onready var player = $Player
 onready var _incoming_map: Map = $IntroMap
 onready var _map_mover: MapMover = $MapMover
+onready var _block_breaker: BlockBreaker = $BlockBreaker
 
 var _outgoing_map: Map = null
 
@@ -18,7 +19,7 @@ func _ready():
 	shift_down_timer.start()
 	player.connect("slide_world", self, "_on_player_slide_world")
 	_map_mover.connect("timeout", self, "_on_MapMover_timeout")
-	_map_mover.maps = [_incoming_map, player]
+	_map_mover.maps = [_incoming_map, player, _block_breaker]
 
 
 func _process(_delta):

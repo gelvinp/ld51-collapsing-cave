@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/scripts/map_wrangler.gd" type="Script" id=1]
 [ext_resource path="res://assets/Maps/Intro.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/scenes/player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/scripts/map_mover.gd" type="Script" id=4]
+[ext_resource path="res://assets/scenes/block_breaker.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 128 )
@@ -16,7 +17,7 @@ script = ExtResource( 1 )
 [node name="IntroMap" parent="MapWrangler" instance=ExtResource( 2 )]
 
 [node name="ShiftDownTimer" type="Timer" parent="MapWrangler"]
-wait_time = 0.1
+wait_time = 10.0
 one_shot = true
 
 [node name="Player" parent="MapWrangler" instance=ExtResource( 3 )]
@@ -24,6 +25,8 @@ position = Vector2( 154, 151 )
 
 [node name="MapMover" type="Node2D" parent="MapWrangler"]
 script = ExtResource( 4 )
+
+[node name="BlockBreaker" parent="MapWrangler" instance=ExtResource( 5 )]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
