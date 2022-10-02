@@ -14,6 +14,7 @@ func _ready():
 
 func start(block_position: Vector2, break_time: float):
 	_break_time = break_time
+	_elapsed_time = 0.0
 	position = block_position
 	set_process(true)
 	visible = true

@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 signal slide_world(amount)
+signal attempt_mine(offset)
 
 enum Facing { LEFT = -1, RIGHT = 1 }
 
@@ -12,6 +13,16 @@ export(float) var min_y = 80.0
 
 var _velocity := Vector2.ZERO
 var _facing = Facing.LEFT
+var _last_mine := Vector2.ZERO
+
+
+func _process(_delta):
+	var intended_mine = Input.get_vector("mine_left", "mine_right", "mine_up", "mine_down").normalized() * 32
+	
+	if _last_mine != intended_mine:
+		_last_mine = intended_mine
+		emit_signal("attempt_mine", intended_mine)
+			
 
 
 func _physics_process(delta):

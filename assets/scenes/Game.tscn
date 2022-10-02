@@ -22,6 +22,7 @@ one_shot = true
 
 [node name="Player" parent="MapWrangler" instance=ExtResource( 3 )]
 position = Vector2( 154, 151 )
+jump_strength = 420.0
 
 [node name="MapMover" type="Node2D" parent="MapWrangler"]
 script = ExtResource( 4 )

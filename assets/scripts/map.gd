@@ -11,21 +11,29 @@ export(float, 0, 1, 0.05) var green_chance = 0.0
 export(float, 0, 1, 0.05) var yellow_chance = 0.0
 export(float, 0, 1, 0.05) var red_chance = 0.0
 
-var _tilemap: TileMap = null
+var tilemap: TileMap = null
 var top_node: Node2D = null
 
 # Called when the node enters the scene tree for the first time.
 func _enter_tree():
 	if not Engine.editor_hint:
-		_tilemap = get_node("TileMap")
+		tilemap = get_node("TileMap")
 		top_node = get_node("Top")
 		
 		if map_type == MapType.STANDARD:
 			spawn_resources()
 
 
+func global_to_map(position: Vector2) -> Vector2:
+	return tilemap.world_to_map(tilemap.to_local(position))
+
+
+func map_to_global(position: Vector2) -> Vector2:
+	return tilemap.to_global(tilemap.map_to_world(position))
+
+
 func spawn_resources():
-	for tile in _tilemap.get_used_cells_by_id(TileType.STONE):
+	for tile in tilemap.get_used_cells_by_id(TileType.STONE):
 		var choices := []
 		
 		if green_chance > 0.0:
@@ -46,20 +54,20 @@ func spawn_resources():
 		match choices[0]:
 			TileType.GREEN:
 				if chance <= green_chance:
-					_tilemap.set_cellv(tile, TileType.GREEN)
+					tilemap.set_cellv(tile, TileType.GREEN)
 			TileType.YELLOW:
 				if chance <= yellow_chance:
-					_tilemap.set_cellv(tile, TileType.YELLOW)
+					tilemap.set_cellv(tile, TileType.YELLOW)
 			TileType.RED:
 				if chance <= red_chance:
-					_tilemap.set_cellv(tile, TileType.RED)
+					tilemap.set_cellv(tile, TileType.RED)
 
 
 func _get_configuration_warning():
-	var tilemap = find_node("TileMap")
+	var map = find_node("TileMap")
 	var top = find_node("Top")
 	
-	if (not tilemap) or (not tilemap is TileMap):
+	if (not map) or (not map is TileMap):
 		return "Missing TileMap child named TileMap!"
 	elif (not top) or (not top is Node2D):
 		return "Missing Node2D child named Top!"
