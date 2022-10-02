@@ -68,6 +68,26 @@ func _process(_delta):
 		_block_breaker.stop()
 
 
+func _physics_process(_delta):
+	var ladder_search_position = player.global_position - Vector2(0, 1)
+	
+	if _incoming_map:
+		var incoming_position = _incoming_map.global_to_map(ladder_search_position)
+		var type = _incoming_map.tilemap.get_cellv(incoming_position)
+		if type != -1:
+			player.is_on_ladder = type == Map.TileType.LADDER
+			return
+	
+	if _outgoing_map:
+		var outgoing_position = _outgoing_map.global_to_map(ladder_search_position)
+		var type = _outgoing_map.tilemap.get_cellv(outgoing_position)
+		if type != -1:
+			player.is_on_ladder = type == Map.TileType.LADDER
+			return
+	
+	player.is_on_ladder = false
+
+
 func mining_intended_block() -> Vector2:
 	var mine_block = player.global_position + Vector2(0, -16) + _mine_offset
 	
@@ -104,6 +124,7 @@ func _on_player_slide_world(amount: float):
 		_outgoing_map.position += Vector2(0.0, amount)
 		
 	_block_breaker.position += Vector2(0.0, amount)
+	_mine_position += Vector2(0.0, amount)
 	
 	player.position += Vector2(0.0, amount)
 	

@@ -4,7 +4,7 @@ extends Node2D
 # Contains common information about a map sequence
 
 enum MapType { STANDARD, CRAFTING, COMBAT }
-enum TileType { BEDROCK = 0, STONE = 1, GREEN = 2, YELLOW = 3, RED = 4 }
+enum TileType { BEDROCK = 0, STONE = 1, GREEN = 2, YELLOW = 3, RED = 4, LADDER = 5, HATCH = 6 }
 
 export(MapType) var map_type = MapType.STANDARD
 export(float, 0, 1, 0.05) var green_chance = 0.0
