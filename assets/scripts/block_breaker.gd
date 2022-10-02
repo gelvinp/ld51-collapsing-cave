@@ -8,9 +8,11 @@ onready var rect := $Node2D/ColorRect
 var _break_time := 0.0
 var _elapsed_time := 0.0
 
+
 func _ready():
 	visible = false
 	set_process(false)
+
 
 func start(block_position: Vector2, break_time: float):
 	_break_time = break_time

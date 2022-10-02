@@ -1,6 +1,5 @@
 extends KinematicBody2D
 
-signal slide_world(amount)
 signal attempt_mine(offset)
 
 enum Facing { LEFT = -1, RIGHT = 1 }
@@ -44,11 +43,6 @@ func _physics_process(delta):
 	_velocity.y = clamp(_velocity.y, -max_speed_y, jump_strength)
 		
 	_velocity = move_and_slide(_velocity, Vector2.UP)
-	
-	var y_offset = min_y - position.y
-	if y_offset > 0:
-		position.y += y_offset
-		emit_signal("slide_world", y_offset)
 	
 	if position.y > 256:
 		print("Die")

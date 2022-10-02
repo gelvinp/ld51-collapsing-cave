@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "MapMover",
 "language": "GDScript",
 "path": "res://assets/scripts/map_mover.gd"
+}, {
+"base": "Node2D",
+"class": "MapWrangler",
+"language": "GDScript",
+"path": "res://assets/scripts/map_wrangler.gd"
 } ]
 _global_script_class_icons={
 "BlockBreaker": "",
 "Map": "",
-"MapMover": ""
+"MapMover": "",
+"MapWrangler": ""
 }
 
 [application]

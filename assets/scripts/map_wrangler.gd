@@ -1,3 +1,4 @@
+class_name MapWrangler
 extends Node2D
 
 const MAP_MOVER := preload("res://assets/scripts/map_mover.gd")
@@ -22,7 +23,6 @@ var _mine_position := Vector2.ZERO
 func _ready():
 	randomize()
 	shift_down_timer.start()
-	player.connect("slide_world", self, "_on_player_slide_world")
 	_map_mover.connect("timeout", self, "_on_MapMover_timeout")
 	_map_mover.maps = [_incoming_map, player, _block_breaker]
 	player.connect("attempt_mine", self, "_on_player_attempt_mine")
@@ -86,6 +86,18 @@ func _physics_process(_delta):
 			return
 	
 	player.is_on_ladder = false
+	
+	var y_offset = player.min_y - player.global_position.y
+	if y_offset > 0:
+		player.position.y += y_offset
+		
+		if _incoming_map:
+			_incoming_map.position += Vector2(0.0, y_offset)
+		if _outgoing_map:
+			_outgoing_map.position += Vector2(0.0, y_offset)
+			
+		_block_breaker.position += Vector2(0.0, y_offset)
+		_mine_position += Vector2(0.0, y_offset)
 
 
 func mining_intended_block() -> Vector2:
@@ -115,18 +127,6 @@ func _on_ShiftDownTimer_timeout():
 
 func _on_MapMover_timeout():
 	shift_down_timer.start()
-
-
-func _on_player_slide_world(amount: float):
-	if _incoming_map:
-		_incoming_map.position += Vector2(0.0, amount)
-	if _outgoing_map:
-		_outgoing_map.position += Vector2(0.0, amount)
-		
-	_block_breaker.position += Vector2(0.0, amount)
-	_mine_position += Vector2(0.0, amount)
-	
-	player.position += Vector2(0.0, amount)
 	
 
 func _on_player_attempt_mine(position: Vector2):
@@ -134,14 +134,16 @@ func _on_player_attempt_mine(position: Vector2):
 
 
 func _on_block_breaker_block_broken():
+	PlayerStats.block_broken(_mine_type)
+	
 	if _incoming_map:
-		var incoming_position = _incoming_map.global_to_map(_mine_position)
-		if _mine_type == _incoming_map.tilemap.get_cellv(incoming_position):
-			_incoming_map.tilemap.set_cellv(incoming_position, -1)
+		var incoming_position = _incoming_map.global_to_map(player.global_position)
+		if _incoming_map.tilemap.get_cellv(incoming_position) != -1:
+			_incoming_map.tilemap.set_cellv(_mine_tile, -1)
 			return
 	
 	if _outgoing_map:
-		var outgoing_position = _outgoing_map.global_to_map(_mine_position)
-		if _mine_type == _outgoing_map.tilemap.get_cellv(outgoing_position):
-			_incoming_map.tilemap.set_cellv(outgoing_position, -1)
+		var outgoing_position = _outgoing_map.global_to_map(player.global_position)
+		if _outgoing_map.tilemap.get_cellv(outgoing_position) != -1:
+			_incoming_map.tilemap.set_cellv(_mine_tile, -1)
 			return
