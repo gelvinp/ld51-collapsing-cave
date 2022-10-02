@@ -71,7 +71,7 @@ func consume_red(quantity: int) -> bool:
 
 
 func take_damage(amount: float) -> bool:
-	health -= amount
+	health -= amount / defense
 	emit_signal("ui_change")
 	return health > 0
 
