@@ -54,13 +54,13 @@ func _process(_delta):
 			
 			match _mine_type:
 				Map.TileType.STONE:
-					_block_breaker.start(_mine_position, 2.5)
+					_block_breaker.start(_mine_position, 2.5 / PlayerStats.mining_speed)
 				Map.TileType.GREEN:
-					_block_breaker.start(_mine_position, 5)
+					_block_breaker.start(_mine_position, 5 / PlayerStats.mining_speed)
 				Map.TileType.YELLOW:
-					_block_breaker.start(_mine_position, 7.5)
+					_block_breaker.start(_mine_position, 7.5 / PlayerStats.mining_speed)
 				Map.TileType.RED:
-					_block_breaker.start(_mine_position, 10)
+					_block_breaker.start(_mine_position, 10 / PlayerStats.mining_speed)
 				_:
 					_block_breaker.stop()
 	elif !_mine_tile.is_equal_approx(INVALID_TILE):

@@ -29,12 +29,12 @@ func _process(_delta):
 
 
 func _physics_process(delta):
-	_velocity.x = Input.get_axis("move_left", "move_right") * max_speed_x
+	_velocity.x = Input.get_axis("move_left", "move_right") * max_speed_x * PlayerStats.movement_speed
 	_facing = sign(_velocity.x)
 	
 	
 	if is_on_ladder:
-		_velocity.y = Input.get_action_strength("jump") * -climb_speed
+		_velocity.y = Input.get_action_strength("jump") * -climb_speed * PlayerStats.movement_speed
 	else:
 		_velocity.y += gravity_accel * delta
 		

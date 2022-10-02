@@ -36,6 +36,10 @@ config/name="LD51"
 run/main_scene="res://assets/scenes/Game.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+PlayerStats="*res://assets/scripts/player_stats.gd"
+
 [display]
 
 window/size/width=320
