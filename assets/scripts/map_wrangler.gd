@@ -66,9 +66,29 @@ func _process(_delta):
 	elif !_mine_tile.is_equal_approx(INVALID_TILE):
 		_mine_tile = INVALID_TILE
 		_block_breaker.stop()
+	
+	if Input.is_action_just_pressed("build") and PlayerStats.stone_placement:
+		build()
 
 
 func _physics_process(_delta):
+	handle_ladder()
+	
+	var y_offset = player.min_y - player.global_position.y
+	print(y_offset)
+	if y_offset > 0:
+		player.position.y += y_offset
+		
+		if _incoming_map:
+			_incoming_map.position += Vector2(0.0, y_offset)
+		if _outgoing_map:
+			_outgoing_map.position += Vector2(0.0, y_offset)
+			
+		_block_breaker.position += Vector2(0.0, y_offset)
+		_mine_position += Vector2(0.0, y_offset)
+
+
+func handle_ladder():
 	var ladder_search_position = player.global_position - Vector2(0, 1)
 	
 	if _incoming_map:
@@ -86,18 +106,6 @@ func _physics_process(_delta):
 			return
 	
 	player.is_on_ladder = false
-	
-	var y_offset = player.min_y - player.global_position.y
-	if y_offset > 0:
-		player.position.y += y_offset
-		
-		if _incoming_map:
-			_incoming_map.position += Vector2(0.0, y_offset)
-		if _outgoing_map:
-			_outgoing_map.position += Vector2(0.0, y_offset)
-			
-		_block_breaker.position += Vector2(0.0, y_offset)
-		_mine_position += Vector2(0.0, y_offset)
 
 
 func mining_intended_block() -> Vector2:
@@ -119,6 +127,40 @@ func mining_intended_block() -> Vector2:
 	
 	_mine_type = -1
 	return INVALID_TILE
+
+
+func build():
+	var offset = 16
+	var last_acceptable = null
+	var acceptable_map = null
+	
+	while offset < 16+32*4:
+		var target_block = player.global_position + Vector2(0, offset)
+		
+		if _incoming_map:
+			var incoming_position = _incoming_map.global_to_map(target_block)
+			if _incoming_map.tilemap.get_cellv(incoming_position) == -1 and _incoming_map.tilemap.get_cellv(incoming_position + Vector2(0, 1)) != -1:
+				last_acceptable = incoming_position
+				acceptable_map = _incoming_map
+				offset += 32
+				continue
+			else:
+				break
+		
+		if _outgoing_map:
+			var outgoing_position = _outgoing_map.global_to_map(target_block)
+			if _outgoing_map.tilemap.get_cellv(outgoing_position) == -1 and _outgoing_map.tilemap.get_cellv(outgoing_position + Vector2(0, 1)) != -1:
+				last_acceptable = outgoing_position
+				acceptable_map = _outgoing_map
+				offset += 32
+				continue
+			else:
+				break
+		
+		offset += 32
+	
+	if last_acceptable and PlayerStats.consume_stone(1):
+		acceptable_map.tilemap.set_cellv(last_acceptable, Map.TileType.STONE)
 
 
 func _on_ShiftDownTimer_timeout():
