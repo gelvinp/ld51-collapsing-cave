@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/scripts/map_wrangler.gd" type="Script" id=1]
 [ext_resource path="res://assets/Maps/Intro.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/scenes/player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/scripts/map_mover.gd" type="Script" id=4]
 [ext_resource path="res://assets/scenes/block_breaker.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/sounds/build.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/sounds/mine.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/sounds/shift.wav" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 128 )
@@ -28,6 +31,16 @@ jump_strength = 420.0
 script = ExtResource( 4 )
 
 [node name="BlockBreaker" parent="MapWrangler" instance=ExtResource( 5 )]
+
+[node name="AudioBuild" type="AudioStreamPlayer" parent="MapWrangler"]
+stream = ExtResource( 6 )
+
+[node name="AudioMine" type="AudioStreamPlayer" parent="MapWrangler"]
+stream = ExtResource( 7 )
+
+[node name="AudioShift" type="AudioStreamPlayer" parent="MapWrangler"]
+stream = ExtResource( 8 )
+volume_db = -8.0
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 

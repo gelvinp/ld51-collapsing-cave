@@ -13,6 +13,9 @@ onready var player = $Player
 onready var _incoming_map: Map = $IntroMap
 onready var _map_mover: MapMover = $MapMover
 onready var _block_breaker: BlockBreaker = $BlockBreaker
+onready var _audio_build := $AudioBuild
+onready var _audio_mine := $AudioMine
+onready var _audio_shift := $AudioShift
 
 var _outgoing_map: Map = null
 var _mine_offset := Vector2.ZERO
@@ -75,7 +78,6 @@ func _physics_process(_delta):
 	handle_ladder()
 	
 	var y_offset = player.min_y - player.global_position.y
-	print(y_offset)
 	if y_offset > 0:
 		player.position.y += y_offset
 		
@@ -161,10 +163,12 @@ func build():
 	
 	if last_acceptable and PlayerStats.consume_stone(1):
 		acceptable_map.tilemap.set_cellv(last_acceptable, Map.TileType.STONE)
+		_audio_build.play()
 
 
 func _on_ShiftDownTimer_timeout():
 	_map_mover.start(1.0, tiles_to_move * TILE_HEIGHT)
+	_audio_shift.play()
 
 
 func _on_MapMover_timeout():
@@ -177,6 +181,7 @@ func _on_player_attempt_mine(position: Vector2):
 
 func _on_block_breaker_block_broken():
 	PlayerStats.block_broken(_mine_type)
+	_audio_mine.play()
 	
 	if _incoming_map:
 		var incoming_position = _incoming_map.global_to_map(player.global_position)

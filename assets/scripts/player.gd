@@ -11,11 +11,15 @@ export(float) var jump_strength = 400.0
 export(float) var min_y = 80.0
 export(float) var climb_speed = 300.0
 
-var is_on_ladder := false
+onready var audio_jump := $AudioJump
+onready var audio_land := $AudioLand
+onready var audio_hit := $AudioHit
 
+var is_on_ladder := false
 var _velocity := Vector2.ZERO
 var _facing = Facing.LEFT
 var _last_mine := Vector2.ZERO
+var _in_air := false
 
 
 func _process(_delta):
@@ -38,11 +42,18 @@ func _physics_process(delta):
 		_velocity.y += gravity_accel * delta
 		
 		if Input.is_action_just_pressed("jump") and is_on_floor():
+			audio_jump.play()
 			_velocity.y = -jump_strength
 	
 	_velocity.y = clamp(_velocity.y, -max_speed_y, jump_strength)
 		
 	_velocity = move_and_slide(_velocity, Vector2.UP)
+	
+	if not is_on_floor():
+		_in_air = true
+	elif _in_air:
+		_in_air = false
+		#audio_land.play()
 	
 	if position.y > 256:
 		print("Die")
