@@ -1,6 +1,8 @@
 class_name MapWrangler
 extends Node2D
 
+signal start_upgrade
+
 const MAP_MOVER := preload("res://assets/scripts/map_mover.gd")
 const TILE_HEIGHT := 32
 const INVALID_TILE := Vector2(-1, -1)
@@ -22,6 +24,7 @@ var _mine_offset := Vector2.ZERO
 var _mine_tile := INVALID_TILE
 var _mine_type = -1
 var _mine_position := Vector2.ZERO
+var _upgrade_open := false
 
 func _ready():
 	randomize()
@@ -72,6 +75,10 @@ func _process(_delta):
 	
 	if Input.is_action_just_pressed("build") and PlayerStats.stone_placement:
 		build()
+	
+	if _upgrade_open:
+		emit_signal("start_upgrade")
+		get_tree().paused = true
 
 
 func _physics_process(_delta):
@@ -117,6 +124,10 @@ func mining_intended_block() -> Vector2:
 		var incoming_position = _incoming_map.global_to_map(mine_block)
 		_mine_type = _incoming_map.tilemap.get_cellv(incoming_position)
 		if _mine_type != -1:
+			if _mine_type == Map.TileType.MACHINE:
+				machine()
+				return incoming_position
+		
 			_mine_position = _incoming_map.map_to_global(incoming_position)
 			return incoming_position
 	
@@ -124,11 +135,34 @@ func mining_intended_block() -> Vector2:
 		var outgoing_position = _outgoing_map.global_to_map(mine_block)
 		_mine_type = _outgoing_map.tilemap.get_cellv(outgoing_position)
 		if _mine_type != -1:
+			if _mine_type == Map.TileType.MACHINE:
+				machine()
+				return outgoing_position
+			
 			_mine_position = _outgoing_map.map_to_global(outgoing_position)
 			return outgoing_position
 	
 	_mine_type = -1
 	return INVALID_TILE
+
+
+func machine():
+	_upgrade_open = true
+
+
+func machine_finish():
+	_upgrade_open = false
+	
+	if _incoming_map:
+		var type = _incoming_map.tilemap.get_cellv(_mine_tile)
+		if _mine_type == Map.TileType.MACHINE:
+			_incoming_map.tilemap.set_cellv(_mine_tile, Map.TileType.MACHINE_SPENT)
+			return
+	
+	if _outgoing_map:
+		var type = _outgoing_map.tilemap.get_cellv(_mine_tile)
+		if _mine_type == Map.TileType.MACHINE:
+			_outgoing_map.tilemap.set_cellv(_mine_tile, Map.TileType.MACHINE_SPENT)
 
 
 func build():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://assets/scripts/map_wrangler.gd" type="Script" id=1]
 [ext_resource path="res://assets/Maps/Intro.tscn" type="PackedScene" id=2]
@@ -8,11 +8,20 @@
 [ext_resource path="res://assets/sounds/build.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/sounds/mine.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/sounds/shift.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/sprites/yellow_icon.png" type="Texture" id=9]
+[ext_resource path="res://assets/sprites/red_icon.png" type="Texture" id=10]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=11]
+[ext_resource path="res://assets/sprites/green_icon.png" type="Texture" id=12]
+[ext_resource path="res://assets/sprites/stone_icon.png" type="Texture" id=13]
+[ext_resource path="res://assets/scripts/UI.gd" type="Script" id=14]
+[ext_resource path="res://assets/scripts/Game.gd" type="Script" id=15]
+[ext_resource path="res://assets/sounds/upgrade.wav" type="AudioStream" id=16]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 128 )
 
-[node name="Node2D" type="Node2D"]
+[node name="Game" type="Node2D"]
+script = ExtResource( 15 )
 
 [node name="MapWrangler" type="Node2D" parent="."]
 script = ExtResource( 1 )
@@ -51,5 +60,114 @@ shape = SubResource( 1 )
 [node name="WallRight" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2( 330, 128 )
 shape = SubResource( 1 )
+
+[node name="UI" type="Control" parent="."]
+pause_mode = 2
+margin_right = 320.0
+margin_bottom = 256.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource( 11 )
+script = ExtResource( 14 )
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+visible = false
+margin_right = 320.0
+margin_bottom = 256.0
+color = Color( 0, 0, 0, 0.431373 )
+
+[node name="UpgradeAudio" type="AudioStreamPlayer" parent="UI"]
+stream = ExtResource( 16 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = -61.0
+margin_right = 35.0
+rect_scale = Vector2( 0.667, 0.667 )
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="UI/VBoxContainer"]
+margin_right = 30.0
+margin_bottom = 19.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/HBoxContainer4"]
+margin_top = 4.0
+margin_right = 11.0
+margin_bottom = 15.0
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 13 )
+stretch_mode = 3
+
+[node name="StoneLabel" type="Label" parent="UI/VBoxContainer/HBoxContainer4"]
+margin_left = 15.0
+margin_right = 24.0
+margin_bottom = 19.0
+text = "0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
+margin_top = 23.0
+margin_right = 30.0
+margin_bottom = 42.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/HBoxContainer"]
+margin_top = 4.0
+margin_right = 11.0
+margin_bottom = 15.0
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 12 )
+stretch_mode = 3
+
+[node name="GreenLabel" type="Label" parent="UI/VBoxContainer/HBoxContainer"]
+margin_left = 15.0
+margin_right = 24.0
+margin_bottom = 19.0
+text = "0"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/VBoxContainer"]
+margin_top = 46.0
+margin_right = 30.0
+margin_bottom = 65.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/HBoxContainer2"]
+margin_top = 4.0
+margin_right = 11.0
+margin_bottom = 15.0
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 9 )
+stretch_mode = 3
+
+[node name="YellowLabel" type="Label" parent="UI/VBoxContainer/HBoxContainer2"]
+margin_left = 15.0
+margin_right = 24.0
+margin_bottom = 19.0
+text = "0"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="UI/VBoxContainer"]
+margin_top = 69.0
+margin_right = 30.0
+margin_bottom = 88.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/HBoxContainer3"]
+margin_top = 4.0
+margin_right = 11.0
+margin_bottom = 15.0
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 10 )
+stretch_mode = 3
+
+[node name="RedLabel" type="Label" parent="UI/VBoxContainer/HBoxContainer3"]
+margin_left = 15.0
+margin_right = 24.0
+margin_bottom = 19.0
+text = "0"
 
 [connection signal="timeout" from="MapWrangler/ShiftDownTimer" to="MapWrangler" method="_on_ShiftDownTimer_timeout"]

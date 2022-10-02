@@ -1,0 +1,112 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/theme.tres" type="Theme" id=1]
+[ext_resource path="res://assets/sprites/yellow_icon.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/red_icon.png" type="Texture" id=3]
+[ext_resource path="res://assets/sprites/green_icon.png" type="Texture" id=4]
+[ext_resource path="res://assets/scripts/ui/UpgradeItem.gd" type="Script" id=5]
+
+[node name="UpgradeItem" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+theme = ExtResource( 1 )
+script = ExtResource( 5 )
+
+[node name="Button" type="Button" parent="."]
+margin_right = 106.0
+margin_bottom = 52.0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 106.0
+margin_bottom = 52.0
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 101.0
+margin_bottom = 47.0
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_right = 96.0
+margin_bottom = 19.0
+text = "Upgrade"
+uppercase = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 23.0
+margin_right = 96.0
+margin_bottom = 42.0
+mouse_filter = 2
+custom_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 24.0
+margin_bottom = 19.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_top = 4.0
+margin_right = 11.0
+margin_bottom = 15.0
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 4 )
+stretch_mode = 3
+
+[node name="GreenLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_left = 15.0
+margin_right = 24.0
+margin_bottom = 19.0
+text = "0"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 36.0
+margin_right = 60.0
+margin_bottom = 19.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+margin_top = 4.0
+margin_right = 11.0
+margin_bottom = 15.0
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 2 )
+stretch_mode = 3
+
+[node name="YellowLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+margin_left = 15.0
+margin_right = 24.0
+margin_bottom = 19.0
+text = "0"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 72.0
+margin_right = 96.0
+margin_bottom = 19.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer3"]
+margin_top = 4.0
+margin_right = 11.0
+margin_bottom = 15.0
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 3 )
+stretch_mode = 3
+
+[node name="RedLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer3"]
+margin_left = 15.0
+margin_right = 24.0
+margin_bottom = 19.0
+text = "0"
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

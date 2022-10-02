@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://assets/resources/Upgrades/stone_placement.tres" type="Resource" id=1]
+[ext_resource path="res://assets/resources/upgrade.gd" type="Script" id=2]
+
+[resource]
+resource_name = "Upgrade"
+script = ExtResource( 2 )
+name = "Mining Speed I"
+green_cost = 0
+yellow_cost = 4
+red_cost = 0
+prerequisites = [ ExtResource( 1 ) ]
+set_build = false
+set_movement_speed = 0.0
+set_mining_speed = 1.125
+add_health = 0.0
+add_max_health = 0.0
+set_attack = 0.0
+set_defense = 0.0

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://assets/resources/upgrade.gd" type="Script" id=1]
+
+[resource]
+resource_name = "Upgrade"
+script = ExtResource( 1 )
+name = "Stone Placement"
+green_cost = 4
+yellow_cost = 0
+red_cost = 0
+prerequisites = [  ]
+set_build = true
+set_movement_speed = 0.0
+set_mining_speed = 0.0
+add_health = 0.0
+add_max_health = 0.0
+set_attack = 0.0
+set_defense = 0.0
