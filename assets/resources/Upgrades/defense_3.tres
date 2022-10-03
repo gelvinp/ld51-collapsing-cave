@@ -18,3 +18,4 @@ add_health = 0.0
 add_max_health = 0.0
 set_attack = 0.0
 set_defense = 1.375
+score = 300.0

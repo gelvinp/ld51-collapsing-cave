@@ -16,6 +16,8 @@ export(float) var add_max_health
 export(float) var set_attack
 export(float) var set_defense
 
+export(float) var score
+
 
 func _init(_name = "", _green = 0, _yellow = 0, _red = 0, _prereq = [], _build = false, _movement = 0.0, _mining = 0.0, _health = 0.0, _max_health = 0.0, _attack = 0.0, _defense = 0.0):
 	name = _name
@@ -78,5 +80,6 @@ func apply() -> bool:
 		PlayerStats.defense = set_defense
 	
 	PlayerStats.upgrades.append(self)
+	ScoreManager.add_score(score)
 	
 	return true
