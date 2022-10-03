@@ -35,6 +35,9 @@ func block_broken(type: int):
 		Map.TileType.RED:
 			red += 1
 			ScoreManager.add_score(50)
+		Map.TileType.BIG_RED:
+			red += 4
+			ScoreManager.add_score(500)
 	
 	emit_signal("ui_change")
 
@@ -84,3 +87,22 @@ func take_damage(amount: float) -> bool:
 func heal(amount: float):
 	health = min(max_health, health + amount)
 	emit_signal("ui_change")
+
+
+func reset():
+	green = 0
+	yellow = 0
+	red = 0
+
+	stone_placement = false
+	movement_speed = 1.0
+	mining_speed = 1.0
+
+	max_health = 100.0
+	health = 100.0
+
+	attack = 1.0
+	defense = 1.0
+
+	upgrades = []
+	

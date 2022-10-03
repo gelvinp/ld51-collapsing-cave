@@ -75,6 +75,9 @@ func _process(_delta):
 					_block_breaker.start(_mine_position, 7.5 / PlayerStats.mining_speed)
 				Map.TileType.RED:
 					_block_breaker.start(_mine_position, 10 / PlayerStats.mining_speed)
+				Map.TileType.BIG_RED:
+					_on_block_breaker_block_broken()
+					DeathSoundManager.red()
 				_:
 					_block_breaker.stop()
 	elif !_mine_tile.is_equal_approx(INVALID_TILE):

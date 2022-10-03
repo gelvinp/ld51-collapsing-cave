@@ -4,12 +4,14 @@ extends Node2D
 # Contains common information about a map sequence
 
 enum MapType { STANDARD, CRAFTING, COMBAT }
-enum TileType { BEDROCK = 0, STONE = 1, GREEN = 2, YELLOW = 3, RED = 4, LADDER = 5, HATCH = 6, MACHINE = 7, MACHINE_SPENT = 8 }
+enum TileType { BEDROCK = 0, STONE = 1, GREEN = 2, YELLOW = 3, RED = 4, LADDER = 5, HATCH = 6, MACHINE = 7, MACHINE_SPENT = 8, BIG_RED = 9 }
 
 export(MapType) var map_type = MapType.STANDARD
 export(float, 0, 1, 0.05) var green_chance = 0.0
 export(float, 0, 1, 0.05) var yellow_chance = 0.0
 export(float, 0, 1, 0.05) var red_chance = 0.0
+
+export(float, 0, 1, 0.05) var stone_removal_chance = 0.0
 
 var tilemap: TileMap = null
 var top_node: Node2D = null
@@ -42,6 +44,8 @@ func spawn_resources():
 			choices.append(TileType.YELLOW)
 		if red_chance > 0.0:
 			choices.append(TileType.RED)
+		if stone_removal_chance > 0.0:
+			choices.append(TileType.STONE)
 		
 		if choices.size() == 0:
 			return
@@ -61,6 +65,9 @@ func spawn_resources():
 			TileType.RED:
 				if chance <= red_chance:
 					tilemap.set_cellv(tile, TileType.RED)
+			TileType.STONE:
+				if chance <= stone_removal_chance:
+					tilemap.set_cellv(tile, -1)
 
 
 func _get_configuration_warning():

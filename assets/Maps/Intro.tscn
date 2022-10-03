@@ -24,6 +24,7 @@ script = ExtResource( 3 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="HatchManager"]
 stream = ExtResource( 4 )
+volume_db = 5.0
 
 [node name="Enemy" parent="." instance=ExtResource( 5 )]
 position = Vector2( 197, -1181 )

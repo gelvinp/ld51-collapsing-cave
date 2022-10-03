@@ -54,7 +54,7 @@ func apply() -> bool:
 		return false
 	if not is_affordable():
 		return false
-	if not PlayerStats.consume_green(green_cost) and PlayerStats.consume_yellow(yellow_cost) and PlayerStats.consume_red(red_cost):
+	if not (PlayerStats.consume_green(green_cost) and PlayerStats.consume_yellow(yellow_cost) and PlayerStats.consume_red(red_cost)):
 		return false
 	
 	if set_build:

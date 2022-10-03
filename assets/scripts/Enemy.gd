@@ -65,7 +65,6 @@ func floor_physics(delta):
 	
 	if player_area.monitoring:
 		for body in player_area.get_overlapping_bodies():
-			print(body.name)
 			_on_Area2D_body_entered(body)
 		
 

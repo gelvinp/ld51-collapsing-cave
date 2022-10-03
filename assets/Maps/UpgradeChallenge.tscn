@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://assets/Maps/UpgradeChallenge.gd" type="Script" id=2]
+[ext_resource path="res://assets/scenes/Enemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/scenes/BigEnemy.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/sounds/hatch.wav" type="AudioStream" id=5]
+
+[node name="Upgrade" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( -720896, 0, 0, -720895, 0, 0, -720894, 0, 0, -720893, 0, 0, -720892, 0, 0, -720891, 0, 0, -720890, 0, 0, -720889, 0, 0, -720888, 5, 0, -720887, 0, 0, -655352, 5, 0, -589816, 5, 0, -524280, 5, 0, -458748, 9, 0, -458746, 7, 0, -458744, 5, 0, -393216, 0, 0, -393215, 6, 0, -393214, 0, 0, -393213, 0, 0, -393212, 0, 0, -393211, 0, 0, -393210, 0, 0, -393209, 0, 0, -393208, 0, 0, -393207, 0, 0, -327679, 5, 0, -262143, 5, 0, -196607, 5, 0, -131071, 5, 0, -65535, 5, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 5, 0, 9, 0, 0, 65544, 5, 0, 131080, 5, 0, 196616, 5, 0, 262152, 5, 0, 327688, 5, 0, 393224, 5, 0, 458760, 5, 0 )
+
+[node name="Top" type="Node2D" parent="."]
+position = Vector2( 0, -352 )
+
+[node name="Enemy" parent="." instance=ExtResource( 4 )]
+position = Vector2( 122, -154 )
+rotation = -3.14159
+
+[node name="Enemy2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 49, -157 )
+rotation = 3.14159
+
+[node name="Enemy3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 190, -155 )
+rotation = 3.14159
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = 5.0
+
+[connection signal="died" from="Enemy" to="." method="_on_Enemy_died"]
+[connection signal="died" from="Enemy2" to="." method="_on_Enemy_died"]
+[connection signal="died" from="Enemy3" to="." method="_on_Enemy_died"]
