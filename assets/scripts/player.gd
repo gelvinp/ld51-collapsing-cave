@@ -17,6 +17,7 @@ onready var audio_land := $AudioLand
 onready var audio_hit := $AudioHit
 onready var audio_attack := $AudioAttack
 onready var attack_scene := preload("res://assets/scenes/attack.tscn")
+onready var animator := $AnimatedSprite
 
 var is_on_ladder := false
 var _velocity := Vector2.ZERO
@@ -25,6 +26,7 @@ var _last_mine := Vector2.ZERO
 var _in_air := false
 var _pushback := false
 var _attack_ready := true
+var is_mining := false
 
 
 func _process(_delta):
@@ -36,7 +38,19 @@ func _process(_delta):
 	
 	if Input.is_action_just_pressed("attack") and _attack_ready:
 		attack()
-
+	
+	if _velocity.y != 0:
+		animator.animation = "idle"
+		animator.frame = 0
+		animator.playing = false
+	elif is_mining:
+		animator.play("mine")
+	elif _velocity.x == 0:
+		animator.play("idle")
+	else:
+		animator.play("walk")
+	
+	animator.flip_h = _facing == Facing.RIGHT
 
 func _physics_process(delta):
 	if _pushback:

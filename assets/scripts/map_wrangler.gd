@@ -138,6 +138,7 @@ func mining_intended_block() -> Vector2:
 		
 			_mine_position = _incoming_map.map_to_global(incoming_position)
 			_mining_map = _incoming_map
+			player.is_mining = true
 			return incoming_position
 	
 	if _outgoing_map:
@@ -151,9 +152,11 @@ func mining_intended_block() -> Vector2:
 			
 			_mine_position = _outgoing_map.map_to_global(outgoing_position)
 			_mining_map = _outgoing_map
+			player.is_mining = true
 			return outgoing_position
 	
 	_mine_type = -1
+	player.is_mining = false
 	return INVALID_TILE
 
 
