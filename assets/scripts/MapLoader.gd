@@ -22,6 +22,8 @@ func get_map():
 		room_count += 1
 		return start_room.instance()
 	
+	ScoreManager.add_score(100)
+	
 	if room_count % 20 == 0:
 		room_count += 1
 		return large_enemy.instance()

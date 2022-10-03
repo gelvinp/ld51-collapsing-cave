@@ -48,6 +48,7 @@ PlayerStats="*res://assets/scripts/player_stats.gd"
 UpgradeProvider="*res://assets/scripts/UpgradeProvider.gd"
 DeathSoundManager="*res://assets/scripts/death_sound_manager.gd"
 MapLoader="*res://assets/scripts/MapLoader.gd"
+ScoreManager="*res://assets/scripts/ScoreManager.gd"
 
 [display]
 

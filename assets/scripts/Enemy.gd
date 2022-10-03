@@ -65,6 +65,7 @@ func floor_physics(delta):
 	
 	if player_area.monitoring:
 		for body in player_area.get_overlapping_bodies():
+			print(body.name)
 			_on_Area2D_body_entered(body)
 		
 
@@ -107,6 +108,7 @@ func hit(amount: float, pushback: Vector2):
 		health -= amount
 		if health <= 0:
 			emit_signal("died")
+			ScoreManager.add_score(150 if large else 100)
 			if large:
 				DeathSoundManager.big()
 			else:

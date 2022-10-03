@@ -25,12 +25,16 @@ func block_broken(type: int):
 	match type:
 		Map.TileType.STONE:
 			stone += 1
+			ScoreManager.add_score(10)
 		Map.TileType.GREEN:
 			green += 1
+			ScoreManager.add_score(20)
 		Map.TileType.YELLOW:
 			yellow += 1
+			ScoreManager.add_score(30)
 		Map.TileType.RED:
 			red += 1
+			ScoreManager.add_score(50)
 	
 	emit_signal("ui_change")
 
