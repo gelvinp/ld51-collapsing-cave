@@ -92,14 +92,12 @@ func _physics_process(delta):
 		#audio_land.play()
 	
 	if position.y > 256:
-		print("Die")
 		PlayerStats.emit_signal("game_over")
 
 
 func hit(amount: float, pushback: Vector2):
 	if $IFrames.is_stopped():
 		if not PlayerStats.take_damage(amount):
-			print("Died!")
 			PlayerStats.emit_signal("game_over")
 			DeathSoundManager.player()
 		else:

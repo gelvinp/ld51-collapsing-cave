@@ -39,8 +39,13 @@ _global_script_class_icons={
 [application]
 
 config/name="Collapsing Cave"
+config/description="Stuck in the mines, it's dangerous to stop moving.
+
+In Collapsing Cave you are at the bottom of an infinite mine, and every ten seconds the mine collapses a little more. If you get caught at the bottom of the screen, it's too late. The mines are full of resources that could help you, but do you have time to mine them?"
 run/main_scene="res://assets/scenes/App.tscn"
+boot_splash/show_image=false
 config/icon="res://icon.png"
+config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
