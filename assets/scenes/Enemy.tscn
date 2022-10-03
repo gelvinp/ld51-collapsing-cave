@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/sprites/monster.png" type="Texture" id=1]
+[ext_resource path="res://assets/scripts/Enemy.gd" type="Script" id=2]
+[ext_resource path="res://assets/sounds/hit_small.wav" type="AudioStream" id=3]
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 12.0
+height = 12.0
+
+[sub_resource type="Animation" id=4]
+resource_name = "squish"
+length = 3.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.9, 1.4, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.848, 1.078 ), Vector2( 1.088, 1.14 ), Vector2( 1.017, 0.957 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 16.0
+height = 12.0
+
+[node name="Enemy" type="KinematicBody2D" groups=["enemy"]]
+collision_layer = 4
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -12 )
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 1.08486, 1.08737 )
+texture = ExtResource( 1 )
+offset = Vector2( 0, -16 )
+
+[node name="LeftCollision" type="RayCast2D" parent="."]
+position = Vector2( -17, -11 )
+cast_to = Vector2( 0, 32 )
+
+[node name="RightCollision" type="RayCast2D" parent="."]
+position = Vector2( 17, -11 )
+cast_to = Vector2( 0, 32 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/squish = SubResource( 4 )
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PoolVector2Array( 0, 0, -100, -200, 100, -200 )
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2( 0, -14 )
+rotation = 1.5708
+shape = SubResource( 5 )
+
+[node name="PlayerDetector" type="RayCast2D" parent="."]
+collision_mask = 3
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_entered" from="AttackArea" to="." method="_on_AttackArea_body_entered"]

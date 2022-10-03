@@ -29,7 +29,6 @@ func _process(_delta):
 		var drawn_size = rect_size * rect_scale
 		var midpoint = drawn_size / 2.0
 		var difference = (get_viewport_rect().size / 2.0) - midpoint
-		print(difference)
 		rect_position += difference
 		modulate = Color.white
 		sizing = false

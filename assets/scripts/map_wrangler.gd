@@ -6,28 +6,32 @@ signal start_upgrade
 const MAP_MOVER := preload("res://assets/scripts/map_mover.gd")
 const TILE_HEIGHT := 32
 const INVALID_TILE := Vector2(-1, -1)
-const TODO_INTRO := preload("res://assets/Maps/Intro.tscn")
 
 export(int, 1, 4) var tiles_to_move = 1
 
 onready var shift_down_timer: Timer = $ShiftDownTimer
 onready var player = $Player
-onready var _incoming_map: Map = $IntroMap
 onready var _map_mover: MapMover = $MapMover
 onready var _block_breaker: BlockBreaker = $BlockBreaker
 onready var _audio_build := $AudioBuild
 onready var _audio_mine := $AudioMine
 onready var _audio_shift := $AudioShift
 
+var _incoming_map: Map = null
 var _outgoing_map: Map = null
 var _mine_offset := Vector2.ZERO
 var _mine_tile := INVALID_TILE
 var _mine_type = -1
 var _mine_position := Vector2.ZERO
+var _mining_map
 var _upgrade_open := false
 
 func _ready():
 	randomize()
+	_incoming_map = MapLoader.get_map()
+	add_child(_incoming_map)
+	move_child(_incoming_map, 0)
+	
 	shift_down_timer.start()
 	_map_mover.connect("timeout", self, "_on_MapMover_timeout")
 	_map_mover.maps = [_incoming_map, player, _block_breaker]
@@ -47,8 +51,9 @@ func _process(_delta):
 		
 		_outgoing_map = _incoming_map
 		# TODO: Load an actually new map
-		_incoming_map = TODO_INTRO.instance()
+		_incoming_map = MapLoader.get_map()
 		add_child(_incoming_map)
+		move_child(_incoming_map, 0)
 		_incoming_map.position.y = -256 + _outgoing_map.top_node.global_position.y
 		_map_mover.maps.append(_incoming_map)
 	
@@ -75,10 +80,6 @@ func _process(_delta):
 	
 	if Input.is_action_just_pressed("build") and PlayerStats.stone_placement:
 		build()
-	
-	if _upgrade_open:
-		emit_signal("start_upgrade")
-		get_tree().paused = true
 
 
 func _physics_process(_delta):
@@ -125,10 +126,12 @@ func mining_intended_block() -> Vector2:
 		_mine_type = _incoming_map.tilemap.get_cellv(incoming_position)
 		if _mine_type != -1:
 			if _mine_type == Map.TileType.MACHINE:
+				_incoming_map.tilemap.set_cellv(incoming_position, Map.TileType.MACHINE_SPENT)
 				machine()
 				return incoming_position
 		
 			_mine_position = _incoming_map.map_to_global(incoming_position)
+			_mining_map = _incoming_map
 			return incoming_position
 	
 	if _outgoing_map:
@@ -136,10 +139,12 @@ func mining_intended_block() -> Vector2:
 		_mine_type = _outgoing_map.tilemap.get_cellv(outgoing_position)
 		if _mine_type != -1:
 			if _mine_type == Map.TileType.MACHINE:
+				_outgoing_map.tilemap.set_cellv(outgoing_position, Map.TileType.MACHINE_SPENT)
 				machine()
 				return outgoing_position
 			
 			_mine_position = _outgoing_map.map_to_global(outgoing_position)
+			_mining_map = _outgoing_map
 			return outgoing_position
 	
 	_mine_type = -1
@@ -147,22 +152,18 @@ func mining_intended_block() -> Vector2:
 
 
 func machine():
+	if _upgrade_open:
+		return
+	
 	_upgrade_open = true
+	
+	emit_signal("start_upgrade")
+	
+	get_tree().paused = true
 
 
 func machine_finish():
 	_upgrade_open = false
-	
-	if _incoming_map:
-		var type = _incoming_map.tilemap.get_cellv(_mine_tile)
-		if _mine_type == Map.TileType.MACHINE:
-			_incoming_map.tilemap.set_cellv(_mine_tile, Map.TileType.MACHINE_SPENT)
-			return
-	
-	if _outgoing_map:
-		var type = _outgoing_map.tilemap.get_cellv(_mine_tile)
-		if _mine_type == Map.TileType.MACHINE:
-			_outgoing_map.tilemap.set_cellv(_mine_tile, Map.TileType.MACHINE_SPENT)
 
 
 func build():
@@ -175,23 +176,22 @@ func build():
 		
 		if _incoming_map:
 			var incoming_position = _incoming_map.global_to_map(target_block)
-			if _incoming_map.tilemap.get_cellv(incoming_position) == -1 and _incoming_map.tilemap.get_cellv(incoming_position + Vector2(0, 1)) != -1:
-				last_acceptable = incoming_position
-				acceptable_map = _incoming_map
-				offset += 32
-				continue
+			if _incoming_map.tilemap.get_cellv(incoming_position) == -1:
+				if _incoming_map.tilemap.get_cellv(incoming_position + Vector2(0, 1)) != -1:
+					last_acceptable = incoming_position
+					acceptable_map = _incoming_map
+					break
 			else:
 				break
 		
 		if _outgoing_map:
 			var outgoing_position = _outgoing_map.global_to_map(target_block)
-			if _outgoing_map.tilemap.get_cellv(outgoing_position) == -1 and _outgoing_map.tilemap.get_cellv(outgoing_position + Vector2(0, 1)) != -1:
-				last_acceptable = outgoing_position
-				acceptable_map = _outgoing_map
-				offset += 32
-				continue
-			else:
-				break
+			if _outgoing_map.tilemap.get_cellv(outgoing_position) == -1:
+				if _outgoing_map.tilemap.get_cellv(outgoing_position + Vector2(0, 1)) != -1:
+					last_acceptable = outgoing_position
+					acceptable_map = _outgoing_map
+					break
+			else: break
 		
 		offset += 32
 	
@@ -216,15 +216,4 @@ func _on_player_attempt_mine(position: Vector2):
 func _on_block_breaker_block_broken():
 	PlayerStats.block_broken(_mine_type)
 	_audio_mine.play()
-	
-	if _incoming_map:
-		var incoming_position = _incoming_map.global_to_map(player.global_position)
-		if _incoming_map.tilemap.get_cellv(incoming_position) != -1:
-			_incoming_map.tilemap.set_cellv(_mine_tile, -1)
-			return
-	
-	if _outgoing_map:
-		var outgoing_position = _outgoing_map.global_to_map(player.global_position)
-		if _outgoing_map.tilemap.get_cellv(outgoing_position) != -1:
-			_incoming_map.tilemap.set_cellv(_mine_tile, -1)
-			return
+	_mining_map.tilemap.set_cellv(_mine_tile, -1)

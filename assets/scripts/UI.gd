@@ -10,6 +10,7 @@ onready var red := $VBoxContainer/HBoxContainer3/RedLabel
 onready var upgrade_menu := preload("res://assets/scenes/ui/UpgradeMenu.tscn")
 onready var background := $ColorRect
 onready var upgrade_audio := $UpgradeAudio
+onready var health := $ProgressBar
 
 var _menu = null
 
@@ -24,6 +25,8 @@ func update_ui():
 	green.text = str(PlayerStats.green)
 	yellow.text = str(PlayerStats.yellow)
 	red.text = str(PlayerStats.red)
+	health.max_value = PlayerStats.max_health
+	health.value = PlayerStats.health
 
 
 func open_upgrade():

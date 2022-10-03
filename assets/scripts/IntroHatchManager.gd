@@ -11,5 +11,7 @@ func _process(_delta):
 			owner.get_node("TileMap").set_cellv(Vector2(1, -16), Map.TileType.LADDER)
 			await_mining = false
 			audio.play()
-	else:
-		set_process(false)
+
+
+func play():
+	audio.play()

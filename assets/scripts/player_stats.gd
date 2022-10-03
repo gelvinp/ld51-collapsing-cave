@@ -1,6 +1,7 @@
 extends Node
 
 signal ui_change
+signal game_over
 
 var stone = 0
 var green = 0

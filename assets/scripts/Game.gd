@@ -10,7 +10,12 @@ extends Node2D
 func _ready():
 	$MapWrangler.connect("start_upgrade", $UI, "open_upgrade")
 	$UI.connect("close_upgrade", $MapWrangler, "machine_finish")
+	PlayerStats.connect("game_over", self, "_on_game_over")
 
+
+func _on_game_over():
+	DeathSoundManager.player()
+	get_tree().paused = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
