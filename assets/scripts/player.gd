@@ -34,6 +34,9 @@ func _process(_delta):
 	
 	if _last_mine != intended_mine:
 		_last_mine = intended_mine
+		if intended_mine.x != 0:
+			_facing = Facing.LEFT if intended_mine.x < 0 else Facing.RIGHT
+		
 		emit_signal("attempt_mine", intended_mine)
 	
 	if Input.is_action_just_pressed("attack") and _attack_ready:
@@ -61,10 +64,12 @@ func _physics_process(delta):
 		return
 	
 	_velocity.x = Input.get_axis("move_left", "move_right") * max_speed_x * PlayerStats.movement_speed
-	if _velocity.x < 0:
-		_facing = Facing.LEFT
-	elif _velocity.x > 0:
-		_facing = Facing.RIGHT
+	
+	if not is_mining:
+		if _velocity.x < 0:
+			_facing = Facing.LEFT
+		elif _velocity.x > 0:
+			_facing = Facing.RIGHT
 	
 	
 	if is_on_ladder:

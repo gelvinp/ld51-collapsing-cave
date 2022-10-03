@@ -80,9 +80,11 @@ func _process(_delta):
 					DeathSoundManager.red()
 				_:
 					_block_breaker.stop()
+					player.is_mining = false
 	elif !_mine_tile.is_equal_approx(INVALID_TILE):
 		_mine_tile = INVALID_TILE
 		_block_breaker.stop()
+		player.is_mining = false
 	
 	if Input.is_action_just_pressed("build") and PlayerStats.stone_placement:
 		build()
