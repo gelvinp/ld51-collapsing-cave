@@ -41,6 +41,9 @@ func _ready():
 
 func _process(_delta):
 	if _outgoing_map and _outgoing_map.top_node.global_position.y > 256:
+		if _outgoing_map.name == "IntroMap":
+			MapLoader.intro_cleared = true
+		
 		_map_mover.maps.erase(_outgoing_map)
 		_outgoing_map.queue_free()
 		_outgoing_map = null

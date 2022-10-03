@@ -32,7 +32,7 @@ points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
 points = PoolVector2Array( 28.2768, 32, 4.53549, 32, 4.697, 10.0267, 27.9538, 10.0267 )
 
 [sub_resource type="ConvexPolygonShape2D" id=8]
-points = PoolVector2Array( 28.0884, 32, 4.93926, 32, 4.93926, 10.0536, 28.0884, 10.0536 )
+points = PoolVector2Array( 28.4759, 31.9808, 5.18787, 31.9808, 5.18787, 10.4842, 28.4759, 10.4842 )
 
 [resource]
 0/name = "bedrock.png 0"

@@ -39,7 +39,7 @@ _global_script_class_icons={
 [application]
 
 config/name="LD51"
-run/main_scene="res://assets/scenes/Game.tscn"
+run/main_scene="res://assets/scenes/App.tscn"
 config/icon="res://icon.png"
 
 [autoload]

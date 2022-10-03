@@ -1,5 +1,7 @@
 extends Node2D
 
+signal game_over
+
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -15,6 +17,7 @@ func _ready():
 
 func _on_game_over():
 	DeathSoundManager.player()
+	emit_signal("game_over")
 	get_tree().paused = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

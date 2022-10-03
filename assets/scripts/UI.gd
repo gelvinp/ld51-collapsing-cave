@@ -44,3 +44,4 @@ func close_upgrade():
 	_menu.queue_free()
 	get_tree().paused = false
 	emit_signal("close_upgrade")
+

@@ -1,0 +1,122 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/ShareTechMono-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=2]
+[ext_resource path="res://assets/scripts/App.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 1 )
+
+[node name="App" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 320.0
+margin_bottom = 256.0
+color = Color( 0.121569, 0.141176, 0.176471, 1 )
+
+[node name="MainMenu" type="Control" parent="."]
+margin_right = 320.0
+margin_bottom = 256.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu"]
+margin_right = 320.0
+margin_bottom = 256.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/MarginContainer"]
+margin_right = 320.0
+margin_bottom = 256.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="MainMenu/MarginContainer/VBoxContainer"]
+margin_left = 101.0
+margin_top = 91.0
+margin_right = 218.0
+margin_bottom = 119.0
+size_flags_horizontal = 4
+theme = ExtResource( 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Mine Time"
+
+[node name="Button" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
+margin_left = 136.0
+margin_top = 139.0
+margin_right = 184.0
+margin_bottom = 164.0
+size_flags_horizontal = 4
+theme = ExtResource( 2 )
+text = "Play"
+
+[node name="GameOver" type="Control" parent="."]
+pause_mode = 2
+visible = false
+margin_right = 320.0
+margin_bottom = 256.0
+
+[node name="ColorRect" type="ColorRect" parent="GameOver"]
+margin_right = 320.0
+margin_bottom = 256.0
+color = Color( 0, 0, 0, 0.431373 )
+
+[node name="MarginContainer" type="MarginContainer" parent="GameOver"]
+margin_right = 320.0
+margin_bottom = 256.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOver/MarginContainer"]
+margin_right = 320.0
+margin_bottom = 256.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="GameOver/MarginContainer/VBoxContainer"]
+margin_left = 95.0
+margin_top = 60.0
+margin_right = 225.0
+margin_bottom = 88.0
+size_flags_horizontal = 4
+theme = ExtResource( 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Game Over!"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOver/MarginContainer/VBoxContainer"]
+margin_top = 108.0
+margin_right = 320.0
+margin_bottom = 150.0
+theme = ExtResource( 2 )
+
+[node name="ScoreLabel" type="Label" parent="GameOver/MarginContainer/VBoxContainer/VBoxContainer"]
+margin_left = 115.0
+margin_right = 205.0
+margin_bottom = 19.0
+size_flags_horizontal = 4
+text = "Score: XXX"
+
+[node name="HighScoreLabel" type="Label" parent="GameOver/MarginContainer/VBoxContainer/VBoxContainer"]
+margin_left = 92.0
+margin_top = 23.0
+margin_right = 227.0
+margin_bottom = 42.0
+size_flags_horizontal = 4
+text = "High Score: XXX"
+
+[node name="Button" type="Button" parent="GameOver/MarginContainer/VBoxContainer"]
+margin_left = 109.0
+margin_top = 170.0
+margin_right = 211.0
+margin_bottom = 195.0
+size_flags_horizontal = 4
+theme = ExtResource( 2 )
+text = "Play Again"
+
+[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="GameOver/MarginContainer/VBoxContainer/Button" to="." method="_on_Play_Again_Button_pressed"]
