@@ -90,6 +90,7 @@ func heal(amount: float):
 
 
 func reset():
+	stone = 0
 	green = 0
 	yellow = 0
 	red = 0
