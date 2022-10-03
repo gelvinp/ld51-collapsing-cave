@@ -38,7 +38,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="LD51"
+config/name="Collapsing Cave"
 run/main_scene="res://assets/scenes/App.tscn"
 config/icon="res://icon.png"
 

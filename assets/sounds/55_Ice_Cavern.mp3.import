@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/55_Ice_Cavern.mp3-14461611b286aa79880321409b04fa09.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/55_Ice_Cavern.mp3"
+dest_files=[ "res://.import/55_Ice_Cavern.mp3-14461611b286aa79880321409b04fa09.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
