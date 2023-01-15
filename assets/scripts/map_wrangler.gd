@@ -177,6 +177,20 @@ func machine_finish():
 	_upgrade_open = false
 
 
+func get_non_air_block(position: Vector2) -> int:
+	if _incoming_map:
+		var type = _incoming_map.tilemap.get_cellv(position)
+		if type != -1:
+			return type
+	
+	if _outgoing_map:
+		var type = _outgoing_map.tilemap.get_cellv(position)
+		if type != -1:
+			return type
+	
+	return -1
+
+
 func build():
 	var offset = 16
 	var last_acceptable = null
@@ -188,7 +202,7 @@ func build():
 		if _incoming_map:
 			var incoming_position = _incoming_map.global_to_map(target_block)
 			if _incoming_map.tilemap.get_cellv(incoming_position) == -1:
-				if _incoming_map.tilemap.get_cellv(incoming_position + Vector2(0, 1)) != -1:
+				if get_non_air_block(incoming_position + Vector2(0, 1)) != -1:
 					last_acceptable = incoming_position
 					acceptable_map = _incoming_map
 					break
@@ -198,13 +212,20 @@ func build():
 		if _outgoing_map:
 			var outgoing_position = _outgoing_map.global_to_map(target_block)
 			if _outgoing_map.tilemap.get_cellv(outgoing_position) == -1:
-				if _outgoing_map.tilemap.get_cellv(outgoing_position + Vector2(0, 1)) != -1:
+				if get_non_air_block(outgoing_position + Vector2(0, 1)) != -1:
 					last_acceptable = outgoing_position
 					acceptable_map = _outgoing_map
 					break
 			else: break
 		
 		offset += 32
+	
+	if last_acceptable:
+		var block_position = acceptable_map.to_global(acceptable_map.tilemap.map_to_world(last_acceptable))
+		
+		if block_position.y < acceptable_map.top_node.global_position.y:
+			last_acceptable = _incoming_map.global_to_map(block_position)
+			acceptable_map = _incoming_map
 	
 	if last_acceptable and PlayerStats.consume_stone(1):
 		acceptable_map.tilemap.set_cellv(last_acceptable, Map.TileType.STONE)
